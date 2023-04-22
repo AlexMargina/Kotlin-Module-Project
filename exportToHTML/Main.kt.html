@@ -1,0 +1,78 @@
+<html>
+<head>
+<title>Main.kt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #000000;}
+.s1 { color: #000080; font-weight: bold;}
+.s2 { color: #008000; font-weight: bold;}
+.s3 { color: #808080; font-style: italic;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Main.kt</font>
+</center></td></tr></table>
+<pre>
+import java.util.*
+import kotlin.random.Random
+
+<span class="s1">fun </span>main(args: Array&lt;String&gt;) {
+    println(<span class="s2">&quot;Приложение Заметки. Добрый день!&quot;</span>) <span class="s3">// поздоровайтесь с пользователем</span>
+    <span class="s1">var </span>levelMenu = MenuLevel.ArhivMenu     <span class="s3">// Задаем уровень меню - уровни описаны в Enum class MenuLevel (val level: String)</span>
+
+    <span class="s1">val </span>mapArhiv = MapArhiv(mutableMapOf&lt;String, MapNotes&gt;())           <span class="s3">// создаем карту, содержащая список всех архивов</span>
+
+    <span class="s1">val </span>menu = MenuSelect(levelMenu)                         <span class="s3">// Создаем обьект класса MenuSelect</span>
+    <span class="s1">var </span>keyReturned : Any? = <span class="s2">&quot;&quot;                              </span><span class="s3">//переменная, в которой будет приниматься результат функций класса MenuSelect</span>
+
+    <span class="s3">//Зацикливаем всю работу по вызову разных меню до момента выбора пункта меню Выход из программы в Главном меню</span>
+    <span class="s1">do </span>{
+        println(<span class="s2">&quot; &quot;</span>)                                        <span class="s3">// Это для красоты, отделить одно меню от другого</span>
+        <span class="s1">if </span>(levelMenu == MenuLevel.ArhivMenu){
+            <span class="s3">// 1. Создаем меню выбранного уровня. Функция makeMenu возвращает выбор пользователя в переменную keyReturned</span>
+             keyReturned = menu.makeMenu(levelMenu, mapArhiv, <span class="s2">&quot;&quot;</span>)
+
+             <span class="s1">if </span>(mapArhiv.mapArhiv.contains(keyReturned)) {   <span class="s3">//проверка если есть такой архив</span>
+                 levelMenu = MenuLevel.NoteMenu                 <span class="s3">// то открываем его, переключая уровень меню</span>
+                 println (<span class="s2">&quot;================================&quot;</span>)
+                 println(<span class="s2">&quot;Выбран архив </span><span class="s1">$</span>keyReturned<span class="s2">&quot;</span>)
+             }
+          }
+        <span class="s1">val </span>keyForMap = keyReturned.toString()                  <span class="s3">// сохраним ключ только что переданного архива для его открытия</span>
+
+        <span class="s1">if </span>(levelMenu == MenuLevel.NoteMenu){
+            <span class="s3">// 1. Создаем меню ЗАМЕТОК. Функция makeMenu возвращает выбор пользователя в переменную keyReturned</span>
+
+            <span class="s1">var </span>keyReturned = menu.makeMenu(levelMenu, mapArhiv, keyForMap)
+            <span class="s1">if </span>(keyReturned==<span class="s2">&quot;exitMenu&quot;</span>) {
+                levelMenu = MenuLevel.ArhivMenu                     <span class="s3">// если вернет exitMenu -&gt; перейти в меню Архивов</span>
+            } <span class="s1">else if </span>(keyReturned!=<span class="s2">&quot;noteCreated&quot;</span>){
+                print(<span class="s2">&quot;Содержание заметки </span><span class="s1">$</span>keyReturned <span class="s2">: &quot;</span>)
+                println(mapArhiv.mapArhiv[keyForMap]?.mutableMapNotes?.get(keyReturned)?.toString())
+            }
+        }
+
+        println (<span class="s2">&quot;================================&quot;</span>)
+    } <span class="s1">while </span>(keyReturned!=<span class="s2">&quot;exitApp&quot;</span>)
+    println(<span class="s2">&quot;Вы вышли из программы&quot;</span>)
+}
+
+
+<span class="s3">/* 
+Критерии успешного выполнения задания: 
++ Есть меню с возможностью добавления и просмотра архивов. 
++ Есть меню с возможностью добавления и просмотра заметок. 
++ Есть возможность добавлять и просматривать текст заметок. 
++ Не должно быть повторений одного и того же кода. Вся логика по считыванию ввода пользователя и вывода пунктов на экран должна переиспользовать один и тот же код. 
++ Ошибочный ввод пользователя должен корректно обрабатываться. 
++ Из любого меню можно выйти и попасть на предыдущее меню или выйти из программы, если это просмотр архива. 
++ Приложение успешно компилируется и выполняется без ошибок. 
++ Весь код не написан в одном файле Main. 
++ Весь код приложения написан на Kotlin.*/</span>
+
+</pre>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<html>
+<head>
+<title>MapNote.kt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #000000;}
+.s1 { color: #000080; font-weight: bold;}
+.s2 { color: #808080; font-style: italic;}
+.s3 { color: #008000; font-weight: bold;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MapNote.kt</font>
+</center></td></tr></table>
+<pre>import java.util.Scanner
+
+<span class="s1">class </span>MapNotes (<span class="s1">val </span>mutableMapNotes: MutableMap&lt;String, String&gt;) {
+
+
+    <span class="s2">//Создаем тестовые заметки и архивы</span>
+    <span class="s2">// val mapNotes  = mutableMapOf(&quot;Заметка #1&quot; to &quot;Значение заметки #1&quot;,</span>
+    <span class="s2">//     &quot;Заметка #2&quot; to &quot;Значение заметки #2&quot;,&quot;Заметка #3&quot; to &quot;Значение заметки #3&quot;,)</span>
+    <span class="s1">fun </span>addMapNotes(
+        mapNotes: MapNotes,
+        keyNote: String,
+        note: String
+    ): MutableMap&lt;String, String&gt; {
+        mapNotes.mutableMapNotes.plusAssign(keyNote to note)
+        <span class="s1">return </span>mapNotes.mutableMapNotes
+    }
+
+    <span class="s1">fun </span>makeNote(mapNotes: MapNotes) {
+        <span class="s1">val </span>input = Scanner(System.`in`)
+        println(<span class="s3">&quot;Введите название заметки&quot;</span>)
+        <span class="s1">val </span>keyNote = (input.nextLine())
+        println(<span class="s3">&quot;Введите содержание заметки&quot;</span>)
+        <span class="s1">val </span>note = (input.nextLine())
+        addMapNotes(mapNotes, keyNote, note)
+        println(<span class="s3">&quot;Заметка добавлена&quot;</span>)
+        <span class="s1">val </span>countmapNotes = mapNotes.mutableMapNotes.size
+        println(<span class="s3">&quot;Теперь заметок: </span><span class="s1">$</span>countmapNotes<span class="s3">&quot;</span>)
+    }
+
+    <span class="s1">fun </span>addNote() {
+        <span class="s1">val </span>input = Scanner(System.`in`)
+        println(<span class="s3">&quot;Введите название заметки&quot;</span>)
+        <span class="s1">val </span>keyNote = (input.nextLine())
+        println(<span class="s3">&quot;Введите содержание заметки&quot;</span>)
+        <span class="s1">val </span>note = (input.nextLine())
+        mutableMapNotes.plusAssign(keyNote to note)
+        println(<span class="s3">&quot;Заметка добавлена&quot;</span>)
+        <span class="s1">val </span>countmapNotes = mutableMapNotes.size
+        println(<span class="s3">&quot;Теперь заметок addNote(): </span><span class="s1">$</span>countmapNotes<span class="s3">&quot;</span>)
+
+    }
+}
+
+
+<span class="s1">class </span>MapArhiv (<span class="s1">val </span>mapArhiv : MutableMap&lt;String,MapNotes&gt;) {
+
+    <span class="s2">//make arhive</span>
+
+
+    <span class="s1">fun </span>addMapNoteToArhiv (keyArhiv:String) {
+        <span class="s1">val </span>mapNotesInArhiv = MapNotes( mutableMapOf&lt;String, String&gt;())
+        mapArhiv.plusAssign (keyArhiv to mapNotesInArhiv)
+    }
+
+    <span class="s1">fun </span>makeArhiv() {
+        <span class="s1">val </span>input = Scanner(System.`in`)
+        println(<span class="s3">&quot;Введите название архива&quot;</span>)
+        <span class="s1">val </span>keyArhiv = (input.nextLine())
+        <span class="s1">val </span>mapNotes: MutableMap&lt;String, String&gt; = mutableMapOf()
+
+        addMapNoteToArhiv (keyArhiv, )
+        println(<span class="s3">&quot;Архив создан&quot;</span>)
+        <span class="s1">val </span>countmapArhives = mapArhiv.size
+        println(<span class="s3">&quot;Теперь количество архивов стало </span><span class="s1">$</span>countmapArhives<span class="s3">&quot;</span>)
+    }
+
+}</pre>
+</body>
+</html>

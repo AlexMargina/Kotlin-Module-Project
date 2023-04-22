@@ -1,0 +1,118 @@
+<html>
+<head>
+<title>MenuSelect.kt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #000000;}
+.s1 { color: #000080; font-weight: bold;}
+.s2 { color: #808080; font-style: italic;}
+.s3 { color: #008000; font-weight: bold;}
+.s4 { color: #0000ff;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MenuSelect.kt</font>
+</center></td></tr></table>
+<pre>import java.util.*
+
+<span class="s1">class </span>MenuSelect (<span class="s1">val </span>level : MenuLevel) {
+
+    <span class="s2">// Функция для создания разных уровней меню. Уровень меню опредлеяется параметром level</span>
+    <span class="s2">// Функция принимект на вход массив Map, содержащий заметки для построения их списка</span>
+    <span class="s2">// Функция возвращает количество созданных пунктов меню.</span>
+
+    <span class="s1">fun </span>makeMenu(level: MenuLevel, mapArhiv: MapArhiv, keyForMap: String) : Any? {
+        println(<span class="s3">&quot;Меню &quot;</span>+ level.levelName)
+        println(<span class="s3">&quot;Введите число, соответствующее пункту меню: &quot;</span>)
+
+        <span class="s1">if </span>(level == MenuLevel.ArhivMenu) {                         <span class="s2">// Уровень меню архивов</span>
+            <span class="s1">val </span>numPointsInMap = mapArhiv.mapArhiv.size             <span class="s2">//размер архива</span>
+            println(<span class="s3">&quot;0. </span><span class="s1">${</span>level.menuPoint()<span class="s1">}</span><span class="s3">&quot;</span>)                      <span class="s2">//0 пункт. Создать.. Название берез из класса Enum</span>
+            <span class="s1">for </span>(i <span class="s1">in </span><span class="s4">1</span>..numPointsInMap) {                    <span class="s2">// 1... и далее список Map в архиве</span>
+                <span class="s1">val </span>arhives = mapArhiv.mapArhiv.keys.toList()[i - <span class="s4">1</span>]
+                println(<span class="s3">&quot;</span><span class="s1">$</span>i<span class="s3">. </span><span class="s1">$</span>arhives<span class="s3">&quot;</span>)
+            }
+            println(<span class="s3">&quot;</span><span class="s1">${</span>numPointsInMap + <span class="s4">1</span><span class="s1">}</span><span class="s3">. Выход из программы&quot;</span>)    <span class="s2">// печать последнего пункта. В режиме архивов - это выход из программы</span>
+
+            <span class="s2">// далее вызываем считывание выбранного пункта:</span>
+            <span class="s1">val </span>pointMenu = readMenu(numPointsInMap + <span class="s4">1</span>)
+            <span class="s2">// АНАЛИЗИРУЕМ ВЫБОР ПОЛЬЗОВАТЕЛЯ:</span>
+            <span class="s1">if </span>(pointMenu == <span class="s4">0</span>) {                                   <span class="s2">//если пользователь выбрал 0</span>
+                mapArhiv.makeArhiv()                                <span class="s2">// создаем еще один архив</span>
+                <span class="s1">return </span><span class="s3">&quot;archiveСreated&quot;                             </span><span class="s2">// возврат &quot;archiveСreated&quot; что Архив создан</span>
+            } <span class="s1">else if </span>(pointMenu == numPointsInMap + <span class="s4">1</span>) {           <span class="s2">// если пользовательвыбрал последний пункт</span>
+                <span class="s1">return </span><span class="s3">&quot;exitApp&quot;                                    </span><span class="s2">//возвращаем фразу &quot;exitApp&quot; для выхода из программы</span>
+            } <span class="s1">else </span>{                                                <span class="s2">// возвращаем название выбранного архива для последующего его открытия</span>
+                <span class="s1">return </span>mapArhiv.mapArhiv.keys.toList()[pointMenu - <span class="s4">1</span>]
+            }
+
+        } <span class="s1">else if </span>(level == MenuLevel.NoteMenu) {                                   <span class="s2">// Уровень меню заметок</span>
+            <span class="s1">val </span>numOfNotes = mapArhiv.mapArhiv[keyForMap]?.mutableMapNotes?.count()
+            println(<span class="s3">&quot;0. </span><span class="s1">${</span>level.menuPoint()<span class="s1">}</span><span class="s3">&quot;</span>)                                      <span class="s2">//0 пункт. Создать.. Название берез из класса Enum</span>
+            <span class="s1">for </span>(i <span class="s1">in </span><span class="s4">1</span>..numOfNotes!!) {
+                <span class="s1">val </span>notes = mapArhiv.mapArhiv[keyForMap]?.mutableMapNotes?.keys?.toList()?.get(i - <span class="s4">1</span>)
+                println(<span class="s3">&quot;</span><span class="s1">$</span>i<span class="s3">. </span><span class="s1">$</span>notes<span class="s3">&quot;</span>)
+            }
+            println(<span class="s3">&quot;</span><span class="s1">${</span>numOfNotes + <span class="s4">1</span><span class="s1">}</span><span class="s3">. Возврат в предыдущее меню&quot;</span>)
+
+            <span class="s2">// далее вызываем считывание выбранного пункта:</span>
+            <span class="s1">val </span>pointMenu = readMenu(numOfNotes + <span class="s4">1</span>)
+            <span class="s2">// АНАЛИЗИРУЕМ ВЫБОР ПОЛЬЗОВАТЕЛЯ:</span>
+            <span class="s1">if </span>(pointMenu == <span class="s4">0</span>) {
+                mapArhiv.mapArhiv[keyForMap]?.makeNote(mapNotes = mapArhiv.mapArhiv[keyForMap]!!)   <span class="s2">// создать новую заметку в makeNote</span>
+                <span class="s1">return </span><span class="s3">&quot;noteCreated&quot;</span>
+            } <span class="s1">else if </span>(pointMenu == numOfNotes + <span class="s4">1</span>) {                               <span class="s2">// если пользовательвыбрал последний пункт</span>
+                <span class="s1">return </span><span class="s3">&quot;exitMenu&quot;                                                   </span><span class="s2">//возвращаем фразу &quot;exitMenu&quot;</span>
+            } <span class="s1">else </span>{                                                                <span class="s2">// если пользователь выбрал конкретную заметку</span>
+                <span class="s1">return </span>mapArhiv.mapArhiv[keyForMap]?.mutableMapNotes?.keys?.toList()?.get(pointMenu - <span class="s4">1</span>)         <span class="s2">// возвращаем название выбранной заметки</span>
+            }
+        } <span class="s1">else </span>{
+            <span class="s1">return </span><span class="s4">0</span>
+        }
+    }
+
+<span class="s2">/* 
+Функция readMenu(numPoints: Int): Int &quot;читает&quot; ввод пользователя и проверяет его правильность 
+Затем возвращает выбранный пункт 
+ */</span>
+    <span class="s1">fun </span>readMenu(numPoints: Int): Int {
+        <span class="s1">val </span>input = Scanner(System.`in`)
+
+        <span class="s1">while </span>(<span class="s1">true</span>) {
+            <span class="s1">if </span>(input.hasNextInt()) {
+                <span class="s1">val </span>SelectPoint = (input.nextInt())
+
+                <span class="s1">if </span>(SelectPoint <span class="s1">in </span><span class="s4">0</span>.. numPoints) {
+                      <span class="s1">return </span>SelectPoint
+                } <span class="s1">else </span>{
+                    println(<span class="s3">&quot;Введите другое число&quot;</span>)
+                }
+
+            } <span class="s1">else </span>{
+                println(<span class="s3">&quot;Введите число!&quot;</span>)
+                input.next()
+            }
+        }
+    }
+}
+
+enum <span class="s1">class </span>MenuLevel (<span class="s1">val </span>levelName: String) <span class="s2">// класс Enum будет хранить названия и свойства разных меню</span>
+{
+    MainMenu    (<span class="s3">&quot;Главное меню&quot;</span>),
+    ArhivMenu   (<span class="s3">&quot;АРХИВ&quot;</span>),
+    NoteMenu    (<span class="s3">&quot;ЗАМЕТКИ&quot;</span>),
+;
+    <span class="s2">// метод класса</span>
+    <span class="s1">fun </span>menuPoint(): String {
+        <span class="s1">return when </span>(<span class="s1">this</span>) {
+            MainMenu    -&gt; <span class="s3">&quot;Главное меню&quot;</span>
+            ArhivMenu   -&gt; <span class="s3">&quot;Создать архив&quot;</span>
+            NoteMenu    -&gt; <span class="s3">&quot;Создать заметку&quot;</span>
+        }
+    }
+}</pre>
+</body>
+</html>
