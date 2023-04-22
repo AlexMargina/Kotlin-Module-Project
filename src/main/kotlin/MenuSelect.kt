@@ -1,13 +1,13 @@
 import java.util.*
 
-class MenuSelect (val level : MenuLevel) {
+class MenuSelect  {
 
     // Функция для создания разных уровней меню - level
     // Функция принимает на вход массив Map, содержащий архивы заметок, а также ключ, если архив уже выбран
     // Функция использует другие функции для создания архивов и заметок, а также для чтения выбора пользователя
     // Функция возвращает выбранный архив, или выбранную заметку, а также управляющие сигналы для основной функции
 
-    fun makeMenu(level: MenuLevel, mapArhiv: MapArhiv, keyForMap: String) : Any? {
+    fun makeMenu(level: MenuLevel, mapArhiv: MapArhiv, keyForMap: String = "") : Any? {
         println("Меню "+ level.levelName)
         println("Введите число, соответствующее пункту меню: ")
 
@@ -23,13 +23,13 @@ class MenuSelect (val level : MenuLevel) {
             // далее вызываем считывание выбранного пункта:
             val pointMenu = readMenu(numPointsInMap + 1)
             // АНАЛИЗИРУЕМ ВЫБОР ПОЛЬЗОВАТЕЛЯ:
-            if (pointMenu == 0) {                                   //если пользователь выбрал 0
+            return if (pointMenu == 0) {                                   //если пользователь выбрал 0
                 mapArhiv.makeArhiv()                                // создаем еще один архив
-                return "archiveСreated"                             // возврат "archiveСreated" что Архив создан
+                "archiveСreated"                             // возврат "archiveСreated" что Архив создан
             } else if (pointMenu == numPointsInMap + 1) {           // если пользовательвыбрал последний пункт
-                return "exitApp"                                    //возвращаем фразу "exitApp" для выхода из программы
+                "exitApp"                                    //возвращаем фразу "exitApp" для выхода из программы
             } else {                                                // возвращаем название выбранного архива для последующего его открытия
-                return mapArhiv.mapArhiv.keys.toList()[pointMenu - 1]
+                mapArhiv.mapArhiv.keys.toList()[pointMenu - 1]
             }
 
         } else if (level == MenuLevel.NoteMenu) {                                   // Уровень меню заметок
@@ -44,13 +44,13 @@ class MenuSelect (val level : MenuLevel) {
             // далее вызываем считывание выбранного пункта:
             val pointMenu = readMenu(numOfNotes + 1)
             // АНАЛИЗИРУЕМ ВЫБОР ПОЛЬЗОВАТЕЛЯ:
-            if (pointMenu == 0) {
+            return if (pointMenu == 0) {
                 mapArhiv.mapArhiv[keyForMap]?.makeNote(mapNotes = mapArhiv.mapArhiv[keyForMap]!!)   // создать новую заметку в makeNote
-                return "noteCreated"
+                "noteCreated"
             } else if (pointMenu == numOfNotes + 1) {                               // если пользовательвыбрал последний пункт
-                return "exitMenu"                                                   //возвращаем фразу "exitMenu"
+                "exitMenu"                                                   //возвращаем фразу "exitMenu"
             } else {                                                                // если пользователь выбрал конкретную заметку
-                return mapArhiv.mapArhiv[keyForMap]?.mutableMapNotes?.keys?.toList()?.get(pointMenu - 1)         // возвращаем название выбранной заметки
+                mapArhiv.mapArhiv[keyForMap]?.mutableMapNotes?.keys?.toList()?.get(pointMenu - 1)         // возвращаем название выбранной заметки
             }
         } else {
             return 0
@@ -61,15 +61,15 @@ class MenuSelect (val level : MenuLevel) {
 Функция readMenu(numPoints: Int): Int "читает" ввод пользователя и проверяет его правильность
 Затем возвращает выбранный пункт
  */
-    fun readMenu(numPoints: Int): Int {
+private fun readMenu(numPoints: Int): Int {
         val input = Scanner(System.`in`)
 
         while (true) {
             if (input.hasNextInt()) {
-                val SelectPoint = (input.nextInt())
+                val selectPoint = (input.nextInt())
 
-                if (SelectPoint in 0.. numPoints) {
-                      return SelectPoint
+                if (selectPoint in 0.. numPoints) {
+                      return selectPoint
                 } else {
                     println("Введите другое число")
                 }
@@ -82,18 +82,3 @@ class MenuSelect (val level : MenuLevel) {
     }
 }
 
-enum class MenuLevel (val levelName: String) // класс Enum будет хранить названия и свойства разных меню
-{
-    MainMenu    ("Главное меню"),
-    ArhivMenu   ("АРХИВ"),
-    NoteMenu    ("ЗАМЕТКИ"),
-;
-    // метод класса
-    fun menuPoint(): String {
-        return when (this) {
-            MainMenu    -> "Главное меню"
-            ArhivMenu   -> "Создать архив"
-            NoteMenu    -> "Создать заметку"
-        }
-    }
-}
