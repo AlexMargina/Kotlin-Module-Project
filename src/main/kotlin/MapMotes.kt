@@ -2,10 +2,10 @@ import java.util.Scanner
 
 class MapNotes (val mutableMapNotes: MutableMap<String, String>) {
 
-    //Создаем тестовые заметки и архивы
-    // val mapNotes  = mutableMapOf("Заметка #1" to "Значение заметки #1",
-    //     "Заметка #2" to "Значение заметки #2","Заметка #3" to "Значение заметки #3",)
-    private fun addMapNotes(
+    // Класс MapNotes описывает структуру заметок в архиве <String, String>
+    // Функция класса makeNote запрашивает название и содержание заметки и затем
+    // с помощью функции addMapNotes записывает заметку в переданный ей архив
+        private fun addMapNotes(
         mapNotes: MapNotes,
         keyNote: String,
         note: String
@@ -29,7 +29,9 @@ class MapNotes (val mutableMapNotes: MutableMap<String, String>) {
 
 
 class MapArhiv (val mapArhiv : MutableMap<String,MapNotes>) {
-
+    // Класс MapArhiv описывает структуру архивов в Мар-хранилище  <String,MapNotes>
+    // Функция класса makeArhiv запрашивает название архива и затем
+    // с помощью функции addMapNoteToArhiv добавляет этот архив в Мар-хранилище архивов
     private fun addMapNoteToArhiv (keyArhiv:String) {
         val mapNotesInArhiv = MapNotes( mutableMapOf())
         mapArhiv.plusAssign (keyArhiv to mapNotesInArhiv)
