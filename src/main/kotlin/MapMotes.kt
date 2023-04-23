@@ -16,9 +16,9 @@ class MapNotes (val mutableMapNotes: MutableMap<String, String>) {
 
     fun makeNote(mapNotes: MapNotes) {
         val input = Scanner(System.`in`)
-        println("Введите название заметки")
+        print("Введите название заметки: ")
         val keyNote = (input.nextLine())
-        println("Введите содержание заметки")
+        print("Введите содержание заметки: ")
         val note = (input.nextLine())
         addMapNotes(mapNotes, keyNote, note)
         println("Заметка добавлена")
@@ -39,7 +39,7 @@ class MapArhiv (val mapArhiv : MutableMap<String,MapNotes>) {
 
     fun makeArhiv() {
         val input = Scanner(System.`in`)
-        println("Введите название архива")
+        print("Введите название архива: ")
         val keyArhiv = (input.nextLine())
         //val mapNotes: MutableMap<String, String> = mutableMapOf()
 
