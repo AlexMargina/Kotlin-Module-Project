@@ -25,6 +25,10 @@ class MapNotes (val mutableMapNotes: MutableMap<String, String>) {
         val countmapNotes = mapNotes.mutableMapNotes.size
         println("Теперь заметок: $countmapNotes")
     }
+
+    fun delNote (mapNotes: MapNotes, keyNote: String) {
+        mapNotes.mutableMapNotes.remove(keyNote)
+    }
 }
 
 

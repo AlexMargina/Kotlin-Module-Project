@@ -8,7 +8,7 @@ class MenuSelect  {
     // Функция возвращает выбранный архив, или выбранную заметку, а также управляющие сигналы для основной функции
 
     fun makeMenu(level: MenuLevel, mapArhiv: MapArhiv, keyForMap: String = "") : Any? {
-        println("Меню "+ level.levelName)
+        println("Меню ${level.levelName}")
         println("Введите число, соответствующее пункту меню: ")
 
         if (level == MenuLevel.ArhivMenu) {                         // Уровень меню архивов
@@ -23,13 +23,17 @@ class MenuSelect  {
             // далее вызываем считывание выбранного пункта:
             val pointMenu = readMenu(numPointsInMap + 1)
             // АНАЛИЗИРУЕМ ВЫБОР ПОЛЬЗОВАТЕЛЯ:
-            return if (pointMenu == 0) {                                   //если пользователь выбрал 0
-                mapArhiv.makeArhiv()                                // создаем еще один архив
-                "archiveСreated"                             // возврат "archiveСreated" что Архив создан
-            } else if (pointMenu == numPointsInMap + 1) {           // если пользовательвыбрал последний пункт
-                "exitApp"                                    //возвращаем фразу "exitApp" для выхода из программы
-            } else {                                                // возвращаем название выбранного архива для последующего его открытия
-                mapArhiv.mapArhiv.keys.toList()[pointMenu - 1]
+            return when (pointMenu) {
+                0 -> {                                   //если пользователь выбрал 0
+                    mapArhiv.makeArhiv()                                // создаем еще один архив
+                    "archiveСreated"                             // возврат "archiveСreated" что Архив создан
+                }
+                numPointsInMap + 1 -> {           // если пользовательвыбрал последний пункт
+                    "exitApp"                                    //возвращаем фразу "exitApp" для выхода из программы
+                }
+                else -> {                                                // возвращаем название выбранного архива для последующего его открытия
+                    mapArhiv.mapArhiv.keys.toList()[pointMenu - 1]
+                }
             }
 
         } else if (level == MenuLevel.NoteMenu) {                                   // Уровень меню заметок
@@ -44,13 +48,17 @@ class MenuSelect  {
             // далее вызываем считывание выбранного пункта:
             val pointMenu = readMenu(numOfNotes + 1)
             // АНАЛИЗИРУЕМ ВЫБОР ПОЛЬЗОВАТЕЛЯ:
-            return if (pointMenu == 0) {
-                mapArhiv.mapArhiv[keyForMap]?.makeNote(mapNotes = mapArhiv.mapArhiv[keyForMap]!!)   // создать новую заметку в makeNote
-                "noteCreated"
-            } else if (pointMenu == numOfNotes + 1) {                               // если пользовательвыбрал последний пункт
-                "exitMenu"                                                   //возвращаем фразу "exitMenu"
-            } else {                                                                // если пользователь выбрал конкретную заметку
-                mapArhiv.mapArhiv[keyForMap]?.mutableMapNotes?.keys?.toList()?.get(pointMenu - 1)         // возвращаем название выбранной заметки
+            return when (pointMenu) {
+                0 -> {
+                    mapArhiv.mapArhiv[keyForMap]?.makeNote(mapNotes = mapArhiv.mapArhiv[keyForMap]!!)   // создать новую заметку в makeNote
+                    "noteCreated"
+                }
+                numOfNotes + 1 -> {                               // если пользовательвыбрал последний пункт
+                    "exitMenu"                                                   //возвращаем фразу "exitMenu"
+                }
+                else -> {                                                                // если пользователь выбрал конкретную заметку
+                    mapArhiv.mapArhiv[keyForMap]?.mutableMapNotes?.keys?.toList()?.get(pointMenu - 1)         // возвращаем название выбранной заметки
+                }
             }
         } else {
             return 0
@@ -61,7 +69,7 @@ class MenuSelect  {
 Функция readMenu(numPoints: Int): Int "читает" ввод пользователя и проверяет его правильность
 Затем возвращает выбранный пункт
  */
-private fun readMenu(numPoints: Int): Int {
+ fun readMenu(numPoints: Int): Int {
         val input = Scanner(System.`in`)
 
         while (true) {
